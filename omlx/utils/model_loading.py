@@ -1634,6 +1634,13 @@ def maybe_load_custom_quantization(
     if not quant_method:
         return None
 
+    if quant_method.lower() == "kquant":
+        if not is_vlm:
+            raise ValueError("This prepared IQ/K checkpoint requires the VLM loader")
+        from ..patches.kquant import load as kquant_load
+
+        return kquant_load(model_name)
+
     if quant_method.lower() == "compressed-tensors":
         from ..patches import qwen38_modelopt_mixed
 
