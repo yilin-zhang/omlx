@@ -111,6 +111,9 @@ def load(model_name: str | Path) -> tuple[Any, Any]:
     model.set_dtype(mx.bfloat16)
     mx.eval(model.parameters())
     model.eval()
+    from .kquant_mlp import install as install_prefill_fusion
+
+    install_prefill_fusion(model)
     processor = utils.load_processor(
         path,
         True,
